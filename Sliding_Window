@@ -3,3 +3,17 @@ The basic idea behind the sliding window technique is to transform two nested lo
 The problem will be based on an array, list or string type of data structure.
 It will ask to find subranges in that array to give the longest, shortest or target values of a string.
 Its concept is mainly based on ideas like the longest sequence or shortest sequence of something that satisfies a given condition perfectly.
+
+
+Maximum sum of k pairs:
+
+def max_sum_2(arr,k):
+    curr_sum = sum(arr[:k])
+    max_sum = curr_sum
+    for i in range(len(arr)-k):
+        curr_sum += arr[i+k]- arr[i]
+        max_sum = max(max_sum,curr_sum)
+    return [max_sum]
+arr = [3, 5, 2, 1, 9]
+k = 4
+print(max_sum_2(arr, k))
