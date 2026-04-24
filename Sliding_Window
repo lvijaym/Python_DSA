@@ -1,0 +1,5 @@
+The basic idea behind the sliding window technique is to transform two nested loops into a single loop. Below are some fundamental clues to identify sliding window algorithm problems:
+
+The problem will be based on an array, list or string type of data structure.
+It will ask to find subranges in that array to give the longest, shortest or target values of a string.
+Its concept is mainly based on ideas like the longest sequence or shortest sequence of something that satisfies a given condition perfectly.
