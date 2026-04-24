@@ -33,3 +33,200 @@ def longsubarr(arr):
         max_sub = max(max_sub,i-left+1)
     return [max_sub,i,left]
 print(longsubarr("abcabcbbmnlgf"))
+
+🧠 Sliding Window – 1 Page Cheat Sheet
+🔹 When to Use Sliding Window
+
+Use it when:
+
+Contiguous subarray / substring
+Optimize from O(N²) → O(N)
+Keywords:
+“longest / shortest”
+“subarray / substring”
+“at most / at least K”
+“sum / distinct / replace / frequency”
+🔹 Core Idea
+
+Instead of recomputing:
+
+Reuse previous window
+→ Add next element
+→ Remove outgoing element
+🔹 Template 1: Fixed Window (Size = K)
+🧩 Use When:
+Subarray of exact size K
+Example: max sum, average
+
+def fixed_window(arr, k):
+    window_sum = 0
+    window_start = 0
+    result = 0
+
+    for window_end in range(len(arr)):
+        window_sum += arr[window_end]
+
+        if window_end >= k - 1:
+            result = max(result, window_sum)  # or process
+            window_sum -= arr[window_start]
+            window_start += 1
+
+    return result
+
+✅ Examples:
+
+Max sum subarray of size K
+
+Average of subarrays
+🔹 Template 2: Variable Window (Grow + Shrink)
+🧩 Use When:
+Condition based (sum ≥ S, ≤ K distinct, etc.)
+def variable_window(arr):
+    window_start = 0
+    result = float('inf')  # or 0
+    window_sum = 0
+
+    for window_end in range(len(arr)):
+        window_sum += arr[window_end]
+
+        while condition_invalid:
+            window_sum -= arr[window_start]
+            window_start += 1
+
+        result = min(result, window_end - window_start + 1)
+
+    return result
+
+✅ Examples:
+
+Smallest subarray with sum ≥ S
+Longest substring with K distinct
+🔹 Template 3: Frequency Map (Strings / Distinct)
+🧩 Use When:
+Character constraints
+Distinct / anagram / permutation
+def freq_window(s, k):
+    window_start = 0
+    freq = {}
+    result = 0
+
+    for window_end in range(len(s)):
+        right = s[window_end]
+        freq[right] = freq.get(right, 0) + 1
+
+        while len(freq) > k:
+            left = s[window_start]
+            freq[left] -= 1
+            if freq[left] == 0:
+                del freq[left]
+            window_start += 1
+
+        result = max(result, window_end - window_start + 1)
+
+    return result
+
+✅ Examples:
+
+Longest substring with K distinct
+Fruits into baskets
+🔹 Template 4: No Repeat / Last Seen Index
+def no_repeat(s):
+    window_start = 0
+    last_seen = {}
+    max_length = 0
+
+    for window_end in range(len(s)):
+        char = s[window_end]
+
+        if char in last_seen:
+            window_start = max(window_start, last_seen[char] + 1)
+
+        last_seen[char] = window_end
+        max_length = max(max_length, window_end - window_start + 1)
+
+    return max_length
+
+✅ Example:
+
+Longest substring without repeating characters
+🔹 Template 5: Replace / Flip K Elements
+🧩 Trick:
+window_size - max_freq <= k
+def replace_k(s, k):
+    window_start = 0
+    max_repeat = 0
+    freq = {}
+    max_length = 0
+
+    for window_end in range(len(s)):
+        char = s[window_end]
+        freq[char] = freq.get(char, 0) + 1
+        max_repeat = max(max_repeat, freq[char])
+
+        if (window_end - window_start + 1 - max_repeat) > k:
+            freq[s[window_start]] -= 1
+            window_start += 1
+
+        max_length = max(max_length, window_end - window_start + 1)
+
+    return max_length
+
+✅ Examples:
+
+Longest repeating character replacement
+Max consecutive 1s with K flips
+🔹 Template 6: Pattern Matching (Anagram / Permutation)
+def pattern_match(s, pattern):
+    window_start = 0
+    matched = 0
+    freq = {}
+
+    for ch in pattern:
+        freq[ch] = freq.get(ch, 0) + 1
+
+    for window_end in range(len(s)):
+        right = s[window_end]
+
+        if right in freq:
+            freq[right] -= 1
+            if freq[right] == 0:
+                matched += 1
+
+        if matched == len(freq):
+            return True
+
+        if window_end >= len(pattern) - 1:
+            left = s[window_start]
+            window_start += 1
+
+            if left in freq:
+                if freq[left] == 0:
+                    matched -= 1
+                freq[left] += 1
+
+    return False
+
+✅ Examples:
+
+Permutation in string
+Find all anagrams
+🔥 Recognition Guide (Super Important)
+Problem Type	Use Template
+Fixed size K	Template 1
+Min/Max length	Template 2
+K distinct	Template 3
+No duplicates	Template 4
+Replace K chars	Template 5
+Pattern match	Template 6
+⚡ Key Tricks (Interview Gold)
+window_end - window_start + 1 → current length
+Always:
+Expand first
+Then shrink if invalid
+Use:
+dict.get(x, 0) for frequency
+For strings:
+Use hashmap or array (26 chars optimization)
+🚀 Complexity
+Type	Time	Space
+Sliding Window	O(N)	O(1) to O(K)
